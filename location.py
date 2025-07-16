@@ -1,6 +1,6 @@
 from random import choice, sample
 from math import sqrt
-from create_type import all_types_dict
+from create_type import CreateType
 
 
 class Location():
@@ -8,7 +8,7 @@ class Location():
         self.directions = ["north", "west", "south", "east", "northwest", "northeast", "southwest", "southeast"]
 
 
-    def random_current_location_generation(self, all_type_dict: all_types_dict):
+    def random_current_location_generation(self, all_type_dict: CreateType):
         all_location = {}
         total_ids = 0
         for id_capacity in all_type_dict.values():
@@ -159,7 +159,9 @@ class Location():
 
 
 
+create_types = CreateType()
 
+all_types_dict = create_types.all_types_dict
 
 location = Location()
 

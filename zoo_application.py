@@ -1,12 +1,15 @@
-import random
+from random import sample, choice
 from math import sqrt
+from location import Location
+from create_type import CreateType
+
 
 class ZooApplication():
     def __init__(self, all_types_dict, directions):
         pass
 
-    def moving(self, type, current_location, directions, distance):
-        direction = random.choice(directions)
+    def moving(self,):
+        pass
 
 
 
@@ -26,15 +29,14 @@ eastern_border = 250
 central_point = 0
 movement_limit = sqrt(250 * 250 * 2)
 
-directions = ["north", "west", "south", "east", "northwest", "northeast", "southwest", "southeast"]
 
-"""sheep_movement_capacity = 2
-cow_movement_capacity = 2
-chicken_movement_capacity = 1
-cockerel_movement_capacity = 1
-wolf_movement_capacity = 3
-lion_movement_capacity = 4
-hunter_movement_capacity = 1"""
+location = Location()
+
+current_locations = location.random_current_location_generation(all_types_dict)
+
+new_directions = location.random_direction_generation(current_locations)
+
+new_locations = location.calculate_new_location(new_directions)
 
 movement_capacity = {"sheep": 2, "cow": 2, "chicken": 1, "cockerel":1, "wolf": 3, "lion": 4, "hunter": 1}
 
