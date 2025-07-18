@@ -9,8 +9,8 @@ class CreateType():
             "male_sheep_list": {"number": 15, "movement_capacity": 2},
             "female_cow_list": {"number": 5, "movement_capacity": 2},
             "male_cow_list": {"number": 5, "movement_capacity": 2},
-            "chicken_list": {"number": 10, "movement_capacity": 1},
-            "cockerel_list": {"number": 10, "movement_capacity": 1},
+            "female_chicken_list": {"number": 10, "movement_capacity": 1},
+            "male_cockerel_list": {"number": 10, "movement_capacity": 1},
             "female_wolf_list": {"number": 5, "movement_capacity": 3},
             "male_wolf_list": {"number": 5, "movement_capacity": 3},
             "female_lion_list": {"number": 4, "movement_capacity": 4},
@@ -18,23 +18,20 @@ class CreateType():
         self.all_types_dict = {}
 
     def create_animals(self, new_animals_dict = None):
-        gender = 0
         if new_animals_dict:
             for animal_type, number_capacity in new_animals_dict.items():
 
                 number = number_capacity["number"]
                 movement_capacity = number_capacity["movement_capacity"]
 
-                if gender % 2 == 0:
+                if animal_type.startswith("female"):
                     animals_list = random.sample(range(0, (number * 2) + 1, 2), number)
                     self.all_types_dict[animal_type] = [animals_list, movement_capacity]
-                    gender += 1
                 else:
                     animals_list = random.sample(range(1, (number * 2) + 1, 2), number)
                     self.all_types_dict[animal_type] = [animals_list, movement_capacity]
-                    gender += 1
 
-            self.all_types_dict["Hunter"] = [[1], 1]
+            self.all_types_dict["hunter"] = [[1], 1]
 
 
         else:
@@ -43,16 +40,15 @@ class CreateType():
                 number = number_capacity["number"]
                 movement_capacity = number_capacity["movement_capacity"]
 
-                if gender % 2 == 0:
+                if animal_type.startswith("female"):
                     animals_list = random.sample(range(0, (number * 2) + 1, 2), number)
                     self.all_types_dict[animal_type] = [animals_list , movement_capacity]
-                    gender += 1
+
                 else:
                     animals_list = random.sample(range(1, (number * 2) + 1, 2), number)
                     self.all_types_dict[animal_type] = [animals_list , movement_capacity]
-                    gender += 1
 
-            self.all_types_dict["Hunter"] = [[1], 1]
+            self.all_types_dict["hunter"] = [[1], 1]
 
         return self.all_types_dict
 
@@ -67,8 +63,3 @@ if __name__ == "__main__":
     for animal_type, id_capacity in all_types_dict.items():
         print(animal_type, id_capacity)
         print("")
-
-    import random
-
-    sayı = random.randint(1, 100)
-    print(sayı)

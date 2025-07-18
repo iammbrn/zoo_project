@@ -61,27 +61,27 @@ class Location():
                     new_direction.append([id, capacity, location, direction])
 
                 elif x == -250 and y == 250:
-                    directions =  ["north", "east", "northeast"]
+                    directions = ["north", "east", "northeast"]
                     direction = choice(directions)
                     new_direction.append([id, capacity, location, direction])
 
                 elif x == 250:
-                    directions =  ["north", "west", "south", "northwest", "southwest"]
+                    directions = ["north", "west", "south", "northwest", "southwest"]
                     direction = choice(directions)
                     new_direction.append([id, capacity, location, direction])
 
                 elif x == -250:
-                    directions =  ["north", "south", "east", "northeast", "southeast"]
+                    directions = ["north", "south", "east", "northeast", "southeast"]
                     direction = choice(directions)
                     new_direction.append([id, capacity, location, direction])
 
                 elif y == 250:
-                    directions =  ["west", "south", "east", "southwest", "southeast"]
+                    directions = ["west", "south", "east", "southwest", "southeast"]
                     direction = choice(directions)
                     new_direction.append([id, capacity, location, direction])
 
                 elif y == -250:
-                    directions =  ["north", "west", "east", "northwest", "northeast"]
+                    directions = ["north", "west", "east", "northwest", "northeast"]
                     direction = choice(directions)
                     new_direction.append([id, capacity, location, direction])
 
