@@ -5,57 +5,70 @@ class CreateType():
 
     def __init__(self):
         self.animals_dict = {
-            "sheep": {"number": 30, "movement_capacity": 2},
-            "cow": {"number": 10, "movement_capacity": 2},
-            "chicken_cockerel": {"number": 20, "movement_capacity": 1},
-            "wolf": {"number": 10, "movement_capacity": 3},
-            "lion": {"number": 8, "movement_capacity": 4}}
+            "female_sheep_list": {"number": 15, "movement_capacity": 2},
+            "male_sheep_list": {"number": 15, "movement_capacity": 2},
+            "female_cow_list": {"number": 5, "movement_capacity": 2},
+            "male_cow_list": {"number": 5, "movement_capacity": 2},
+            "chicken_list": {"number": 10, "movement_capacity": 1},
+            "cockerel_list": {"number": 10, "movement_capacity": 1},
+            "female_wolf_list": {"number": 5, "movement_capacity": 3},
+            "male_wolf_list": {"number": 5, "movement_capacity": 3},
+            "female_lion_list": {"number": 4, "movement_capacity": 4},
+            "male_lion_list": {"number": 4, "movement_capacity": 4}}
         self.all_types_dict = {}
 
-        self.create_animals()
+    def create_animals(self, new_animals_dict = None):
+        gender = 0
+        if new_animals_dict:
+            for animal_type, number_capacity in new_animals_dict.items():
 
-    def create_animals(self):
-        for type, number_capacity in self.animals_dict.items():
-            self.female_animal_list = []
-            self.male_animal_list = []
-            self.type = type
+                number = number_capacity["number"]
+                movement_capacity = number_capacity["movement_capacity"]
 
-            number = number_capacity["number"]
-            self.movement_capacity = number_capacity["movement_capacity"]
+                if gender % 2 == 0:
+                    animals_list = random.sample(range(0, (number * 2) + 1, 2), number)
+                    self.all_types_dict[animal_type] = [animals_list, movement_capacity]
+                    gender += 1
+                else:
+                    animals_list = random.sample(range(1, (number * 2) + 1, 2), number)
+                    self.all_types_dict[animal_type] = [animals_list, movement_capacity]
+                    gender += 1
 
-            animals_list = random.sample(range(1, number + 1), number)
+            self.all_types_dict["Hunter"] = [[1], 1]
 
-            self.all_types_dict = self.classification_animals(animals_list)
-
-        self.all_types_dict["Hunter"] = [[1], 1]
-        return self.all_types_dict
-
-    def classification_animals(self, animals_list):
-        for animal in animals_list:
-            if animal % 2 == 0:
-                self.female_animal_list.append(animal)
-
-            else:
-                self.male_animal_list.append(animal)
-
-        return self.read_type()
-
-    def read_type(self):
-        if self.type != "chicken_cockerel":
-
-            self.all_types_dict["female_" + self.type + "_list"] = [self.female_animal_list, self.movement_capacity]
-            self.all_types_dict["male_" + self.type + "_list"] = [self.male_animal_list, self.movement_capacity]
 
         else:
-            self.all_types_dict["chicken_list"] = [self.female_animal_list, self.movement_capacity]
-            self.all_types_dict["cockerel_list"] = [self.male_animal_list, self.movement_capacity]
+            for animal_type, number_capacity in self.animals_dict.items():
+
+                number = number_capacity["number"]
+                movement_capacity = number_capacity["movement_capacity"]
+
+                if gender % 2 == 0:
+                    animals_list = random.sample(range(0, (number * 2) + 1, 2), number)
+                    self.all_types_dict[animal_type] = [animals_list , movement_capacity]
+                    gender += 1
+                else:
+                    animals_list = random.sample(range(1, (number * 2) + 1, 2), number)
+                    self.all_types_dict[animal_type] = [animals_list , movement_capacity]
+                    gender += 1
+
+            self.all_types_dict["Hunter"] = [[1], 1]
 
         return self.all_types_dict
+
+    def create_new_animal(self):
+        pass
+
 
 
 if __name__ == "__main__":
     create_type = CreateType()
-    all_types_dict = create_type
-    for type, id_capacity in all_types_dict.items():
-        print(type, id_capacity)
+    all_types_dict = create_type.create_animals()
+    for animal_type, id_capacity in all_types_dict.items():
+        print(animal_type, id_capacity)
         print("")
+
+    import random
+
+    sayı = random.randint(1, 100)
+    print(sayı)

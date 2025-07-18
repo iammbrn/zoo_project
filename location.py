@@ -8,7 +8,7 @@ class Location():
         self.directions = ["north", "west", "south", "east", "northwest", "northeast", "southwest", "southeast"]
 
 
-    def random_current_location_generation(self, all_type_dict: CreateType):
+    def random_current_location_generation(self, all_type_dict):
         all_location = {}
         total_ids = 0
         for id_capacity in all_type_dict.values():
@@ -19,7 +19,7 @@ class Location():
         x = 0
         y = 0
 
-        for type, id_capacity in all_type_dict.items():
+        for animal_type, id_capacity in all_type_dict.items():
             locations = []
             ids = id_capacity[0]
             capacity = id_capacity[1]
@@ -30,13 +30,13 @@ class Location():
                 x += 1
                 y += 1
 
-            all_location[type] = locations
+            all_location[animal_type] = locations
         return all_location
 
 
     def random_direction_generation(self, current_locations):
         new_directions = {}
-        for type, id_cap_locs in current_locations.items():
+        for animal_type, id_cap_locs in current_locations.items():
             new_direction = []
 
             for id_loc in id_cap_locs:
@@ -89,13 +89,13 @@ class Location():
                     direction = choice(self.directions)
                     new_direction.append([id, capacity, location, direction])
 
-            new_directions[type] = new_direction
+            new_directions[animal_type] = new_direction
 
         return new_directions
 
     def calculate_new_location(self, new_directions):
         new_all_type_dic = {}
-        for type, id_cap_loc_dirs in new_directions.items():
+        for animal_type, id_cap_loc_dirs in new_directions.items():
             new_locations = []
             for id_cap_loc_dir in id_cap_loc_dirs:
                 id = id_cap_loc_dir[0]
@@ -154,28 +154,12 @@ class Location():
 
                 else:
                     pass
-            new_all_type_dic[type] = new_locations
+            new_all_type_dic[animal_type] = new_locations
         return new_all_type_dic
 
 
 
-create_types = CreateType()
 
-all_types_dict = create_types.all_types_dict
-
-location = Location()
-
-"""direction = location.random_direction_generation(directions)
-
-current_location = location.random_current_location_generation()
-
-new_location = location.calculate_new_location(current_location, direction, 4)"""
-
-current_locations = location.random_current_location_generation(all_types_dict)
-
-new_directions = location.random_direction_generation(current_locations)
-
-new_locations = location.calculate_new_location(new_directions)
 
 
 if __name__ == "__main__":
@@ -188,6 +172,25 @@ if __name__ == "__main__":
 
     print("New location:",new_location)"""
 
+    create_types = CreateType()
+
+    all_types_dict = create_types.create_animals()
+
+    location = Location()
+
+    """direction = location.random_direction_generation(directions)
+
+    current_location = location.random_current_location_generation()
+
+    new_location = location.calculate_new_location(current_location, direction, 4)"""
+
+    current_locations = location.random_current_location_generation(all_types_dict)
+
+    new_directions = location.random_direction_generation(current_locations)
+
+    new_locations = location.calculate_new_location(new_directions)
+    print("")
+    print(new_locations["female_sheep_list"][0][0])
     print("")
 
     for old_location, new_location in zip(current_locations.items(), new_locations.items()):

@@ -1,7 +1,10 @@
 from random import sample, choice
 from math import sqrt
-from location import Location
 from create_type import CreateType
+from location import Location
+from breeding import Breeding
+
+
 
 
 class ZooApplication():
@@ -30,13 +33,6 @@ central_point = 0
 movement_limit = sqrt(250 * 250 * 2)
 
 
-location = Location()
-
-current_locations = location.random_current_location_generation(all_types_dict)
-
-new_directions = location.random_direction_generation(current_locations)
-
-new_locations = location.calculate_new_location(new_directions)
 
 movement_capacity = {"sheep": 2, "cow": 2, "chicken": 1, "cockerel":1, "wolf": 3, "lion": 4, "hunter": 1}
 
@@ -49,11 +45,29 @@ hunter_hunting_distance = {"sheep": 8, "cow": 8, "chicken": 8, "cockerel": 8, "w
 
 breeding_distance = 3
 
+if __name__ == "__main__":
 
-for step in range(1000):
+    create_type = CreateType()
+    all_types_dict = create_type.create_animals()
 
+    location = Location()
+    current_locations = location.random_current_location_generation(all_types_dict)
+    x = 0
+    for step in range(1000):
+        breeding = Breeding()
+        new_breedings = breeding.calculate_distance(current_locations)
 
-    pass
+        new_directions = location.random_direction_generation(new_breedings)
+        new_locations = location.calculate_new_location(new_directions)
+        current_locations = new_locations
+        print(x)
+        x += 1
+
+    for type, id_cap_loc in new_locations.items():
+        print(type, len(id_cap_loc))
+
+    print()
+
 
 
 
