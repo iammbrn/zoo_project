@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hayvanat Bahçesi Haritası</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f2f4f8;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+            padding: 0 0 32px 0;
+        }
+        .header {
+            text-align: center;
+            padding: 36px 0 10px 0;
+            background: linear-gradient(90deg, #e3f2fd 0%, #f1f8e9 100%);
+            border-radius: 18px 18px 0 0;
+            box-shadow: 0 2px 8px rgba(25,118,210,0.04);
+        }
+        .header h1 {
+            color: #1976d2;
+            font-size: 2.5rem;
+            margin: 0 0 8px 0;
+            letter-spacing: 1px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        .header .subtitle {
+            color: #333;
+            font-size: 1.1rem;
+            margin-top: 6px;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+        .panel {
+            background: #f7fafc;
+            border-radius: 10px;
+            padding: 14px 20px;
+            margin: 24px auto 18px auto;
+            font-size: 17px;
+            color: #333;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+            max-width: 500px;
+        }
+        .map {
+            width: 100%;
+            max-width: 500px;
+            height: 500px;
+            border: 2px solid #1976d2;
+            border-radius: 12px;
+            position: relative;
+            background: linear-gradient(135deg, #e3f2fd 0%, #f1f8e9 100%);
+            margin: 24px auto 0 auto;
+            box-shadow: 0 2px 12px rgba(25,118,210,0.08);
+        }
+        .legend {
+            margin: 18px auto 0 auto;
+            text-align: center;
+            max-width: 500px;
+        }
+        .legend span {
+            margin-right: 20px;
+            font-size: 16px;
+        }
+        .legend-box {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            margin-right: 5px;
+            vertical-align: middle;
+        }
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: center;
+            margin: 32px auto 0 auto;
+            max-width: 500px;
+        }
+        .controls button, #resetAfterFinal {
+            padding: 12px 28px;
+            font-size: 17px;
+            border-radius: 10px;
+            border: none;
+            background: #1890ff;
+            color: #fff;
+            cursor: pointer;
+            font-weight: 500;
+            box-shadow: 0 2px 8px rgba(24,144,255,0.08);
+            transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+            margin: 0;
+            outline: none;
+            min-width: 150px;
+            letter-spacing: 0.5px;
+        }
+        .controls button:hover, #resetAfterFinal:hover {
+            background: #005fa3;
+            box-shadow: 0 4px 16px rgba(24,144,255,0.18);
+            transform: translateY(-2px) scale(1.03);
+        }
+        #resetAfterFinal {
+            background: #43a047 !important;
+            color: #fff !important;
+            margin-left: 0 !important;
+            margin-top: 12px;
+            font-weight: bold;
+            border: none;
+            display: block;
+            width: 100%;
+            max-width: 220px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        #resetAfterFinal:hover {
+            background: #2e7031 !important;
+        }
+        .animal {
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 32px;
+            font-weight: bold;
+            color: #fff;
+            font-size: 15px;
+            border: 2.5px solid #333;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+        }
+        @media (max-width: 600px) {
+            .container {
+                max-width: 98vw;
+                padding: 0 2vw 18px 2vw;
+            }
+            .map {
+                max-width: 98vw;
+                height: 60vw;
+                min-height: 260px;
+            }
+            .panel {
+                font-size: 15px;
+                padding: 10px 6px;
+            }
+            .header h1 {
+                font-size: 1.2rem;
+            }
+            .controls button, #resetAfterFinal {
+                min-width: 100px;
+                font-size: 14px;
+                padding: 8px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1><span>🐾</span> Hayvanat Bahçesi Simülasyonu</h1>
+        <div class="subtitle">Adım adım veya toplu ilerleyerek hayvanların haritadaki değişimini gözlemleyin.</div>
+    </div>
+    <div class="panel" id="infoPanel">
+        <b>Adım:</b> <span id="stepNum">0</span> &nbsp; | &nbsp;
+        <span id="animalCounts"></span>
+    </div>
+    <div class="legend">
+        <span><span class="legend-box" style="background:#4caf50;"></span>Koyun</span>
+        <span><span class="legend-box" style="background:#795548;"></span>İnek</span>
+        <span><span class="legend-box" style="background:#ffeb3b;color:#333;"></span>Tavuk</span>
+        <span><span class="legend-box" style="background:#607d8b;"></span>Kurt</span>
+        <span><span class="legend-box" style="background:#f44336;"></span>Aslan</span>
+        <span><span class="legend-box" style="background:#ff9800;"></span>Horoz</span>
+        <span><span class="legend-box" style="background:#212121;"></span>Avcı</span>
+    </div>
+    <div class="map" id="zooMap"></div>
+    <div class="controls">
+        <button onclick="resetSim()">Başa Dön</button>
+        <button onclick="stepSim()">Bir Adım İlerle</button>
+        <button onclick="finalSim()">1000. Adıma Git</button>
+    </div>
+</div>
+<script>
+const typeColors = {
+    'koyun': '#4caf50',
+    'inek': '#795548',
+    'tavuk': '#ffeb3b',
+    'kurt': '#607d8b',
+    'aslan': '#f44336',
+    'horoz': '#ff9800',
+    'avci': '#212121',
+};
+const typeIcons = {
+    'koyun': '🐑',
+    'inek': '🐄',
+    'tavuk': '🐔',
+    'kurt': '🐺',
+    'aslan': '🦁',
+    'horoz': '🐓',
+    'avci': '🤠',
+};
+
+function normalize(val) {
+    // -250...250 -> 0...(500-32)
+    return Math.min(Math.max(Math.round(((val + 250) / 500) * (500 - 32)), 0), 500 - 32);
+}
+
+function getOffset(index, total, x, y) {
+    if (total === 1) return {dx: 0, dy: 0};
+    const angle = (2 * Math.PI * index) / total;
+    const radius = 12;
+    let dx = Math.round(Math.cos(angle) * radius);
+    let dy = Math.round(Math.sin(angle) * radius);
+    // Sınırda taşmayı önle
+    if (x + dx < 0) dx = 0;
+    if (x + dx > 500 - 32) dx = 0;
+    if (y + dy < 0) dy = 0;
+    if (y + dy > 500 - 32) dy = 0;
+    return {dx, dy};
+}
+
+let lastNew = [];
+let lastRemoved = [];
+let isFinal = false;
+let autoRunning = false;
+
+async function runToFinal() {
+    autoRunning = true;
+    setLoading(true);
+    for (let i = 0; i < 1000 && autoRunning; i++) {
+        const res = await fetch('/api/step');
+        const data = await res.json();
+        lastNew = data.new_animals || [];
+        lastRemoved = data.removed_animals || [];
+        renderMap(data.animals);
+        updateCounts(data.animals, data.step);
+        if (data.step >= 1000) break;
+        // await new Promise(r => setTimeout(r, 5)); // animasyon için istersen aç
+    }
+    setLoading(false);
+    isFinal = true;
+    autoRunning = false;
+    document.querySelectorAll('.controls button').forEach(btn => btn.disabled = true);
+    let panel = document.getElementById('infoPanel');
+    if (!document.getElementById('finalMsg')) {
+        panel.innerHTML += ' <span id="finalMsg" style="color:#e53935;font-weight:bold;">Simülasyon sona erdi.</span>';
+    }
+    showResetButton(true);
+}
+
+function finalSim() { if (!isFinal && !autoRunning) runToFinal(); }
+
+function renderMap(animals) {
+    const map = document.getElementById('zooMap');
+    map.innerHTML = '';
+    const posMap = {};
+    animals.forEach(animal => {
+        const x = normalize(animal.x);
+        const y = normalize(animal.y);
+        const key = x + ',' + y;
+        if (!posMap[key]) posMap[key] = [];
+        posMap[key].push(animal);
+    });
+    Object.entries(posMap).forEach(([key, group]) => {
+        const [x, y] = key.split(',').map(Number);
+        group.forEach((animal, i) => {
+            const {dx, dy} = getOffset(i, group.length, x, y);
+            const div = document.createElement('div');
+            div.className = 'animal';
+            div.style.left = (x + dx) + 'px';
+            div.style.top = (y + dy) + 'px';
+            div.style.background = typeColors[animal.type] || '#888';
+            if(animal.type === 'tavuk') div.style.color = '#333';
+            div.title = `${animal.name} (${animal.type}${animal.gender ? ', ' + animal.gender : ''})`;
+            div.innerText = typeIcons[animal.type] || animal.name;
+            // Yeni eklenen hayvanlar için yeşil kenarlık
+            if (lastNew.some(([raw_type, id]) => raw_type === animal.raw_type && id === animal.id)) {
+                div.style.border = '3px solid #00e676';
+                div.style.zIndex = 2;
+            }
+            // Silinen hayvanlar için kırmızı çarpı (fade out için overlay eklenebilir)
+            if (lastRemoved.some(([raw_type, id]) => raw_type === animal.raw_type && id === animal.id)) {
+                div.style.border = '3px solid #e53935';
+                div.style.opacity = 0.5;
+                div.title += ' (Silindi)';
+            }
+            map.appendChild(div);
+        });
+    });
+}
+
+function updateCounts(animals, step) {
+    document.getElementById('stepNum').innerText = step;
+    const counts = {};
+    animals.forEach(a => {
+        counts[a.type] = (counts[a.type] || 0) + 1;
+    });
+    let html = '';
+    for(const t of ['koyun','inek','tavuk','kurt','horoz','aslan','avci']) {
+        html += `<b>${t.charAt(0).toUpperCase()+t.slice(1)}:</b> ${counts[t]||0} &nbsp; `;
+    }
+    document.getElementById('animalCounts').innerHTML = html;
+}
+
+function setLoading(isLoading) {
+    const buttons = document.querySelectorAll('.controls button');
+    buttons.forEach(btn => btn.disabled = isLoading || isFinal);
+    let panel = document.getElementById('infoPanel');
+    if (isLoading) {
+        panel.style.opacity = 0.5;
+        panel.innerHTML += ' <span id="loadingMsg">Yükleniyor...</span>';
+    } else {
+        panel.style.opacity = 1;
+        let msg = document.getElementById('loadingMsg');
+        if (msg) msg.remove();
+    }
+}
+
+function showResetButton(show) {
+    let btn = document.getElementById('resetAfterFinal');
+    if (show) {
+        if (!btn) {
+            btn = document.createElement('button');
+            btn.id = 'resetAfterFinal';
+            btn.innerText = 'Başa Dön';
+            btn.style.marginLeft = '16px';
+            btn.onclick = () => {
+                isFinal = false;
+                let msg = document.getElementById('finalMsg');
+                if (msg) msg.remove();
+                btn.remove();
+                resetSim();
+                document.querySelectorAll('.controls button').forEach(b => b.disabled = false);
+            };
+            document.querySelector('.controls').appendChild(btn);
+        }
+    } else {
+        if (btn) btn.remove();
+    }
+}
+
+async function fetchAndRender(url) {
+    setLoading(true);
+    try {
+        const res = await fetch(url);
+        const data = await res.json();
+        lastNew = data.new_animals || [];
+        lastRemoved = data.removed_animals || [];
+        renderMap(data.animals);
+        updateCounts(data.animals, data.step);
+        if (data.error || data.step >= 1000) {
+            isFinal = true;
+            setLoading(false);
+            document.querySelectorAll('.controls button').forEach(btn => btn.disabled = true);
+            let panel = document.getElementById('infoPanel');
+            if (!document.getElementById('finalMsg')) {
+                panel.innerHTML += ' <span id="finalMsg" style="color:#e53935;font-weight:bold;">Simülasyon sona erdi.</span>';
+            }
+            showResetButton(true);
+        } else {
+            isFinal = false;
+            let msg = document.getElementById('finalMsg');
+            if (msg) msg.remove();
+            showResetButton(false);
+        }
+    } finally {
+        setLoading(false);
+    }
+}
+function stepSim() { fetchAndRender('/api/step'); }
+function resetSim() {
+    isFinal = false;
+    autoRunning = false;
+    showResetButton(false);
+    let msg = document.getElementById('finalMsg');
+    if (msg) msg.remove();
+    let btn = document.getElementById('resetAfterFinal');
+    if (btn) btn.remove();
+    document.querySelectorAll('.controls button').forEach(b => b.disabled = false);
+    fetchAndRender('/api/reset');
+}
+
+// İlk yüklemede başa alıp ilk adımı göster
+window.onload = () => { resetSim(); };
+</script>
+</body>
+</html>
