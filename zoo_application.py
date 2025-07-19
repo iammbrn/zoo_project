@@ -16,6 +16,7 @@ if __name__ == "__main__":
     x = 0
     step_step_results = {}
     step = 1
+    step_step_results = []
     for step in range(1000):
         breeding = Breeding()
         new_breedings = breeding.calculate_distance_for_breeding(current_locations)
@@ -26,12 +27,20 @@ if __name__ == "__main__":
         new_directions = location.random_direction_generation(new_huntings)
         new_locations = location.calculate_new_location(new_directions)
         current_locations = new_locations
+        result =[]
+        for animal_type, number_of_type in new_locations.items():
 
-    for animal_type, number_of_type in new_locations.items():
-        print(animal_type, len(number_of_type))
+            result.append((animal_type, len(number_of_type)))
+        step_step_results.append(result)
 
 
+    """for result in step_step_results:
+        print(result)
+        print()"""
 
+
+    for animal_type, id_cap_loc in new_locations.items():
+        print(animal_type, len(id_cap_loc))
 
 
 
