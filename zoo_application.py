@@ -13,6 +13,7 @@ if __name__ == "__main__":
 
     location = Location()
     current_locations = location.random_current_location_generation(all_types_dict)
+    stat_current_locations = current_locations
     x = 0
     step_step_results = {}
     step = 1
@@ -38,14 +39,115 @@ if __name__ == "__main__":
         print(result)
         print()"""
 
+    print()
+    print("         Hayvanat Bahçesi Başlangıç Durumu           ")
+    print()
+    for animal_type, id_cap_loc in stat_current_locations.items():
 
+        if "sheep" in animal_type:
+            if "female" in animal_type:
+                number_of_female_sheep = len(id_cap_loc)
+                print("Dişi Koyun Sayısı: ", number_of_female_sheep)
+
+            else:
+                number_of_male_sheep = len(id_cap_loc)
+                print("Erkek Koyun Sayısı: ", number_of_male_sheep)
+
+        elif "cow" in animal_type:
+            if "female" in animal_type:
+                number_of_female_cow = len(id_cap_loc)
+                print("Dişi İnek Sayısı: ", number_of_female_cow)
+
+            else:
+                number_of_male_cow = len(id_cap_loc)
+                print("Erkek İnek Sayısı: ", number_of_male_cow)
+
+        elif "chicken" in animal_type:
+            number_of_chicken = len(id_cap_loc)
+            print("Tavuk Sayısı: ", number_of_chicken)
+
+        elif "cockerel" in animal_type:
+            number_of_chicken = len(id_cap_loc)
+            print("Tavuk Sayısı: ", number_of_chicken)
+
+        elif "wolf" in animal_type:
+
+            if "female" in animal_type:
+                number_of_female_wolf = len(id_cap_loc)
+                print("Dişi Kurt Sayısı: ", number_of_female_wolf)
+
+            else:
+                number_of_male_wolf = len(id_cap_loc)
+                print("Erkek Kurt Sayısı: ", number_of_male_wolf)
+
+
+        elif "lion" in animal_type:
+
+            if "female" in animal_type:
+                number_of_female_lion = len(id_cap_loc)
+                print("Dişi Aslan Sayısı: ", number_of_female_lion)
+
+            else:
+                number_of_male_lion = len(id_cap_loc)
+                print("Erkek Aslan Sayısı: ", number_of_male_lion)
+        else:
+            number_of_hunter = len(id_cap_loc)
+            print("Avcı Sayısı:", number_of_hunter)
+
+
+    print()
+    print("         Simülasyon Sonuçları            ")
+    print()
     for animal_type, id_cap_loc in new_locations.items():
-        print(animal_type, len(id_cap_loc))
+
+            if "sheep" in animal_type:
+                if "female" in animal_type:
+                    number_of_female_sheep = len(id_cap_loc)
+                    print("Dişi Koyun Sayısı: ", number_of_female_sheep)
+
+                else:
+                    number_of_male_sheep = len(id_cap_loc)
+                    print("Erkek Koyun Sayısı: ", number_of_male_sheep)
+
+            elif "cow" in animal_type:
+                if "female" in animal_type:
+                    number_of_female_cow= len(id_cap_loc)
+                    print("Dişi İnek Sayısı: ", number_of_female_cow)
+
+                else:
+                    number_of_male_cow = len(id_cap_loc)
+                    print("Erkek İnek Sayısı: ", number_of_male_cow)
+
+            elif "chicken" in animal_type:
+                number_of_chicken = len(id_cap_loc)
+                print("Tavuk Sayısı: ", number_of_chicken)
+
+            elif "cockerel" in animal_type:
+                number_of_chicken = len(id_cap_loc)
+                print("Tavuk Sayısı: ", number_of_chicken)
+
+            elif "wolf" in animal_type:
+
+                if "female" in animal_type:
+                    number_of_female_wolf = len(id_cap_loc)
+                    print("Dişi Kurt Sayısı: ", number_of_female_wolf)
+
+                else:
+                    number_of_male_wolf = len(id_cap_loc)
+                    print("Erkek Kurt Sayısı: ", number_of_male_wolf)
 
 
+            elif "lion" in animal_type:
 
+                if "female" in animal_type:
+                    number_of_female_lion = len(id_cap_loc)
+                    print("Dişi Aslan Sayısı: ", number_of_female_lion)
 
-
-
+                else:
+                    number_of_male_lion = len(id_cap_loc)
+                    print("Erkek Aslan Sayısı: ", number_of_male_lion)
+            else:
+                number_of_hunter = len(id_cap_loc)
+                print("Avcı Sayısı:", number_of_hunter)
 
 
